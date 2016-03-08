@@ -45,6 +45,7 @@ export default class Autowhatever extends Component {
       containerOpen: 'react-autowhatever__container--open',
       input: 'react-autowhatever__input',
       itemsContainer: 'react-autowhatever__items-container',
+      items: 'react-autowhatever__items-container',
       item: 'react-autowhatever__item',
       itemFocused: 'react-autowhatever__item--focused',
       sectionContainer: 'react-autowhatever__section-container',
@@ -170,11 +171,15 @@ export default class Autowhatever extends Component {
     }
 
     return (
-      <ul id={this.getItemsContainerId()}
+      <div {...theme('itemsContainer', 'itemsContainer')}>
+        <ul
+          id={this.getItemsContainerId()}
           role="listbox"
-          {...theme('itemsContainer', 'itemsContainer')}>
-        {this.renderItemsList(theme, items, null)}
-      </ul>
+          {...theme('items', 'items')}
+        >
+          {this.renderItemsList(theme, items, null)}
+        </ul>
+      </div>
     );
   }
 
@@ -234,7 +239,7 @@ export default class Autowhatever extends Component {
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
         <div
           contentEditable
-          ref={ref => this.input = ref}
+          ref="input"
           {...theme('input', 'input')}
           onKeyDown={this.onKeyDown}
           onFocus={onFocus}
