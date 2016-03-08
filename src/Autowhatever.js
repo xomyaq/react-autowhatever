@@ -202,14 +202,19 @@ export default class Autowhatever extends Component {
         onKeyDownFn(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
 
+      case 'Enter':
+        event.preventDefault();
+        onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
+        break;
+
       default:
         onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
     }
   }
 
   render() {
-    const { multiSection, focusedSectionIndex, focusedItemIndex, onFocus, onBlur,
-      onKeyDown } = this.props;
+    const { multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
+    const { value, onFocus, onBlur, onKeyDown } = this.props.inputProps;
     const theme = themeable(this.props.theme);
     const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
     const isOpen = (renderedItems !== null);
@@ -231,10 +236,10 @@ export default class Autowhatever extends Component {
           contentEditable
           ref={ref => this.input = ref}
           {...theme('input', 'input')}
-          onKeyDown={onKeyDown}
+          onKeyDown={this.onKeyDown}
           onFocus={onFocus}
           onBlur={onBlur}
-        ></div>
+        >{value}</div>
         {renderedItems}
       </div>
     );

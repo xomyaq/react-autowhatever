@@ -227,6 +227,11 @@ var Autowhatever = function (_Component) {
           onKeyDownFn(event, { newFocusedSectionIndex: newFocusedSectionIndex, newFocusedItemIndex: newFocusedItemIndex });
           break;
 
+        case 'Enter':
+          event.preventDefault();
+          onKeyDownFn(event, { focusedSectionIndex: focusedSectionIndex, focusedItemIndex: focusedItemIndex });
+          break;
+
         default:
           onKeyDownFn(event, { focusedSectionIndex: focusedSectionIndex, focusedItemIndex: focusedItemIndex });
       }
@@ -234,10 +239,17 @@ var Autowhatever = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this4 = this;
+
       var _props6 = this.props;
       var multiSection = _props6.multiSection;
       var focusedSectionIndex = _props6.focusedSectionIndex;
       var focusedItemIndex = _props6.focusedItemIndex;
+      var _props$inputProps = this.props.inputProps;
+      var value = _props$inputProps.value;
+      var onFocus = _props$inputProps.onFocus;
+      var onBlur = _props$inputProps.onBlur;
+      var onKeyDown = _props$inputProps.onKeyDown;
 
       var theme = (0, _reactThemeable2.default)(this.props.theme);
       var renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
@@ -248,11 +260,7 @@ var Autowhatever = function (_Component) {
         value: '',
         autoComplete: 'off',
         role: 'combobox',
-        ref: 'input',
-        'aria-autocomplete': 'list',
-        'aria-owns': this.getItemsContainerId(),
-        'aria-expanded': isOpen,
-        'aria-activedescendant': ariaActivedescendant
+        ref: 'input'
       }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
@@ -260,7 +268,20 @@ var Autowhatever = function (_Component) {
       return _react2.default.createElement(
         'div',
         theme('container', 'container', isOpen && 'containerOpen'),
-        _react2.default.createElement('input', inputProps),
+        _react2.default.createElement(
+          'div',
+          _extends({
+            contentEditable: true,
+            ref: function ref(_ref) {
+              return _this4.input = _ref;
+            }
+          }, theme('input', 'input'), {
+            onKeyDown: this.onKeyDown,
+            onFocus: onFocus,
+            onBlur: onBlur
+          }),
+          value
+        ),
         renderedItems
       );
     }
