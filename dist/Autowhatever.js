@@ -181,11 +181,16 @@ var Autowhatever = function (_Component) {
       }
 
       return _react2.default.createElement(
-        'ul',
-        _extends({ id: this.getItemsContainerId(),
-          role: 'listbox'
-        }, theme('itemsContainer', 'itemsContainer')),
-        this.renderItemsList(theme, items, null)
+        'div',
+        theme('itemsContainer', 'itemsContainer'),
+        _react2.default.createElement(
+          'ul',
+          _extends({
+            id: this.getItemsContainerId(),
+            role: 'listbox'
+          }, theme('items', 'items')),
+          this.renderItemsList(theme, items, null)
+        )
       );
     }
   }, {
@@ -239,27 +244,16 @@ var Autowhatever = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
-
       var _props6 = this.props;
       var multiSection = _props6.multiSection;
       var focusedSectionIndex = _props6.focusedSectionIndex;
       var focusedItemIndex = _props6.focusedItemIndex;
-      var _props$inputProps = this.props.inputProps;
-      var value = _props$inputProps.value;
-      var onFocus = _props$inputProps.onFocus;
-      var onBlur = _props$inputProps.onBlur;
-      var onKeyDown = _props$inputProps.onKeyDown;
 
       var theme = (0, _reactThemeable2.default)(this.props.theme);
       var renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
       var isOpen = renderedItems !== null;
       var ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
       var inputProps = _extends({
-        type: 'text',
-        value: '',
-        autoComplete: 'off',
-        role: 'combobox',
         ref: 'input'
       }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
@@ -271,16 +265,9 @@ var Autowhatever = function (_Component) {
         _react2.default.createElement(
           'div',
           _extends({
-            contentEditable: true,
-            ref: function ref(_ref) {
-              return _this4.input = _ref;
-            }
-          }, theme('input', 'input'), {
-            onKeyDown: this.onKeyDown,
-            onFocus: onFocus,
-            onBlur: onBlur
-          }),
-          value
+            contentEditable: true
+          }, inputProps, theme('input', 'input')),
+          this.state.value
         ),
         renderedItems
       );
@@ -328,6 +315,7 @@ Autowhatever.defaultProps = {
     containerOpen: 'react-autowhatever__container--open',
     input: 'react-autowhatever__input',
     itemsContainer: 'react-autowhatever__items-container',
+    items: 'react-autowhatever__items-container',
     item: 'react-autowhatever__item',
     itemFocused: 'react-autowhatever__item--focused',
     sectionContainer: 'react-autowhatever__section-container',
