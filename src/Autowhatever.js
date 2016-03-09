@@ -225,6 +225,7 @@ export default class Autowhatever extends Component {
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
       ref: 'input',
+      value: '',
       ...theme('input', 'input'),
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
@@ -236,7 +237,7 @@ export default class Autowhatever extends Component {
           contentEditable
           {...inputProps}
           {...theme('input', 'input')}
-        >{this.state.value}</div>
+        >{inputProps.value}</div>
         {renderedItems}
       </div>
     );

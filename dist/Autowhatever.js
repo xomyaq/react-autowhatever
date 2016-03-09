@@ -254,7 +254,8 @@ var Autowhatever = function (_Component) {
       var isOpen = renderedItems !== null;
       var ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
       var inputProps = _extends({
-        ref: 'input'
+        ref: 'input',
+        value: ''
       }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
@@ -267,7 +268,7 @@ var Autowhatever = function (_Component) {
           _extends({
             contentEditable: true
           }, inputProps, theme('input', 'input')),
-          this.state.value
+          inputProps.value
         ),
         renderedItems
       );
