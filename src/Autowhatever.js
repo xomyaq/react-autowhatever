@@ -219,16 +219,11 @@ export default class Autowhatever extends Component {
 
   render() {
     const { multiSection, focusedSectionIndex, focusedItemIndex } = this.props;
-    const { value, onFocus, onBlur, onKeyDown } = this.props.inputProps;
     const theme = themeable(this.props.theme);
     const renderedItems = multiSection ? this.renderSections(theme) : this.renderItems(theme);
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
-      type: 'text',
-      value: '',
-      autoComplete: 'off',
-      role: 'combobox',
       ref: 'input',
       ...theme('input', 'input'),
       ...this.props.inputProps,
@@ -239,12 +234,9 @@ export default class Autowhatever extends Component {
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
         <div
           contentEditable
-          ref="input"
+          {...inputProps}
           {...theme('input', 'input')}
-          onKeyDown={this.onKeyDown}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        >{value}</div>
+        >{this.state.value}</div>
         {renderedItems}
       </div>
     );
