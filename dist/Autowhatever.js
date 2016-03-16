@@ -254,8 +254,15 @@ var Autowhatever = function (_Component) {
       var isOpen = renderedItems !== null;
       var ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
       var inputProps = _extends({
+        type: 'text',
+        value: '',
+        autoComplete: 'off',
+        role: 'combobox',
         ref: 'input',
-        value: ''
+        'aria-autocomplete': 'list',
+        'aria-owns': this.getItemsContainerId(),
+        'aria-expanded': isOpen,
+        'aria-activedescendant': ariaActivedescendant
       }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
@@ -263,13 +270,7 @@ var Autowhatever = function (_Component) {
       return _react2.default.createElement(
         'div',
         theme('container', 'container', isOpen && 'containerOpen'),
-        _react2.default.createElement(
-          'div',
-          _extends({
-            contentEditable: true
-          }, inputProps, theme('input', 'input')),
-          inputProps.value
-        ),
+        _react2.default.createElement('input', inputProps),
         renderedItems
       );
     }

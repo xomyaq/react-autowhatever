@@ -224,8 +224,15 @@ export default class Autowhatever extends Component {
     const isOpen = (renderedItems !== null);
     const ariaActivedescendant = this.getItemId(focusedSectionIndex, focusedItemIndex);
     const inputProps = {
-      ref: 'input',
+      type: 'text',
       value: '',
+      autoComplete: 'off',
+      role: 'combobox',
+      ref: 'input',
+      'aria-autocomplete': 'list',
+      'aria-owns': this.getItemsContainerId(),
+      'aria-expanded': isOpen,
+      'aria-activedescendant': ariaActivedescendant,
       ...theme('input', 'input'),
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
@@ -233,11 +240,7 @@ export default class Autowhatever extends Component {
 
     return (
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
-        <div
-          contentEditable
-          {...inputProps}
-          {...theme('input', 'input')}
-        >{inputProps.value}</div>
+        <input {...inputProps} />
         {renderedItems}
       </div>
     );
