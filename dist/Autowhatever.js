@@ -40,12 +40,28 @@ var Autowhatever = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Autowhatever).call(this, props));
 
+    _this.setInputWidth = function () {
+      var shadowWidth = _this.refs.shadow.offsetWidth;
+
+      _this.refs.input.style.width = shadowWidth ? shadowWidth + 'px' : '100%';
+    };
+
     _this.onKeyDown = _this.onKeyDown.bind(_this);
     return _this;
   } // Styles. See: https://github.com/markdalgleish/react-themeable
 
 
   _createClass(Autowhatever, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.setInputWidth();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      this.setInputWidth();
+    }
+  }, {
     key: 'getItemId',
     value: function getItemId(sectionIndex, itemIndex) {
       if (itemIndex === null) {
@@ -105,7 +121,7 @@ var Autowhatever = function (_Component) {
           onMouseEnter: onMouseEnterFn,
           onMouseLeave: onMouseLeaveFn,
           onMouseDown: onMouseDownFn,
-          onClick: onClickFn
+          onMouseUp: onClickFn
         });
 
         return _react2.default.createElement(
@@ -232,11 +248,6 @@ var Autowhatever = function (_Component) {
           onKeyDownFn(event, { newFocusedSectionIndex: newFocusedSectionIndex, newFocusedItemIndex: newFocusedItemIndex });
           break;
 
-        case 'Enter':
-          event.preventDefault();
-          onKeyDownFn(event, { focusedSectionIndex: focusedSectionIndex, focusedItemIndex: focusedItemIndex });
-          break;
-
         default:
           onKeyDownFn(event, { focusedSectionIndex: focusedSectionIndex, focusedItemIndex: focusedItemIndex });
       }
@@ -266,10 +277,21 @@ var Autowhatever = function (_Component) {
       }, theme('input', 'input'), this.props.inputProps, {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
+      var spanStyle = {
+        position: 'absolute',
+        height: 0,
+        visibility: 'hidden',
+        whiteSpace: 'pre'
+      };
 
       return _react2.default.createElement(
         'div',
         theme('container', 'container', isOpen && 'containerOpen'),
+        _react2.default.createElement(
+          'span',
+          _extends({}, theme('shadow', 'shadow'), { ref: 'shadow', style: spanStyle }),
+          inputProps.value
+        ),
         _react2.default.createElement('input', inputProps),
         renderedItems
       );

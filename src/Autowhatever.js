@@ -60,6 +60,20 @@ export default class Autowhatever extends Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
+  componentDidMount() {
+    this.setInputWidth();
+  }
+
+  componentDidUpdate() {
+    this.setInputWidth();
+  }
+
+  setInputWidth = () => {
+    const shadowWidth = this.refs.shadow.offsetWidth;
+
+    this.refs.input.style.width = shadowWidth ? `${shadowWidth}px` : '100%';
+  };
+
   getItemId(sectionIndex, itemIndex) {
     if (itemIndex === null) {
       return null;
@@ -109,7 +123,7 @@ export default class Autowhatever extends Component {
         onMouseEnter: onMouseEnterFn,
         onMouseLeave: onMouseLeaveFn,
         onMouseDown: onMouseDownFn,
-        onClick: onClickFn
+        onMouseUp: onClickFn
       };
 
       return (
@@ -207,11 +221,6 @@ export default class Autowhatever extends Component {
         onKeyDownFn(event, { newFocusedSectionIndex, newFocusedItemIndex });
         break;
 
-      case 'Enter':
-        event.preventDefault();
-        onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
-        break;
-
       default:
         onKeyDownFn(event, { focusedSectionIndex, focusedItemIndex });
     }
@@ -237,9 +246,18 @@ export default class Autowhatever extends Component {
       ...this.props.inputProps,
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
+    const spanStyle = {
+      position: 'absolute',
+      height: 0,
+      visibility: 'hidden',
+      whiteSpace: 'pre'
+    };
 
     return (
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
+        <span {...theme('shadow', 'shadow')} ref="shadow" style={spanStyle}>
+          {inputProps.value}
+        </span>
         <input {...inputProps} />
         {renderedItems}
       </div>
