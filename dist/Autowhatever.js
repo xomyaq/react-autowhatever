@@ -43,7 +43,7 @@ var Autowhatever = function (_Component) {
     _this.setInputWidth = function () {
       var shadowWidth = _this.refs.shadow.offsetWidth;
 
-      _this.refs.input.style.width = shadowWidth ? shadowWidth + 'px' : '100%';
+      _this.refs.input.style.width = shadowWidth || _this.props.inputProps.expand ? shadowWidth + 'px' : '100%';
     };
 
     _this.onKeyDown = _this.onKeyDown.bind(_this);

@@ -71,7 +71,9 @@ export default class Autowhatever extends Component {
   setInputWidth = () => {
     const shadowWidth = this.refs.shadow.offsetWidth;
 
-    this.refs.input.style.width = shadowWidth ? `${shadowWidth}px` : '100%';
+    this.refs.input.style.width = (shadowWidth || this.props.inputProps.expand)
+      ? `${shadowWidth}px`
+      : '100%';
   };
 
   getItemId(sectionIndex, itemIndex) {
