@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import createSectionIterator from 'section-iterator';
 import themeable from 'react-themeable';
+import omit from 'lodash/omit';
+import noop from 'lodash/noop';
 
-function noop() {}
 
 export default class Autowhatever extends Component {
   static propTypes = {
@@ -245,7 +246,7 @@ export default class Autowhatever extends Component {
       'aria-expanded': isOpen,
       'aria-activedescendant': ariaActivedescendant,
       ...theme('input', 'input'),
-      ...this.props.inputProps,
+      ...omit(this.props.inputProps, 'expand'),
       onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
     };
     const spanStyle = {
@@ -254,6 +255,9 @@ export default class Autowhatever extends Component {
       visibility: 'hidden',
       whiteSpace: 'pre'
     };
+
+    console.debug(this.props.inputProps);
+    console.debug(omit(this.props.inputProps, 'expand'));
 
     return (
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>

@@ -22,6 +22,14 @@ var _reactThemeable = require('react-themeable');
 
 var _reactThemeable2 = _interopRequireDefault(_reactThemeable);
 
+var _omit = require('lodash/omit');
+
+var _omit2 = _interopRequireDefault(_omit);
+
+var _noop = require('lodash/noop');
+
+var _noop2 = _interopRequireDefault(_noop);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29,8 +37,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function noop() {}
 
 var Autowhatever = function (_Component) {
   _inherits(Autowhatever, _Component);
@@ -48,8 +54,7 @@ var Autowhatever = function (_Component) {
 
     _this.onKeyDown = _this.onKeyDown.bind(_this);
     return _this;
-  } // Styles. See: https://github.com/markdalgleish/react-themeable
-
+  }
 
   _createClass(Autowhatever, [{
     key: 'componentDidMount',
@@ -104,16 +109,16 @@ var Autowhatever = function (_Component) {
 
         var onMouseEnterFn = onMouseEnter ? function (event) {
           return onMouseEnter(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
-        } : noop;
+        } : _noop2.default;
         var onMouseLeaveFn = onMouseLeave ? function (event) {
           return onMouseLeave(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
-        } : noop;
+        } : _noop2.default;
         var onMouseDownFn = onMouseDown ? function (event) {
           return onMouseDown(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
-        } : noop;
+        } : _noop2.default;
         var onClickFn = onClick ? function (event) {
           return onClick(event, { sectionIndex: sectionIndex, itemIndex: itemIndex });
-        } : noop;
+        } : _noop2.default;
         var itemProps = _extends({
           id: _this2.getItemId(sectionIndex, itemIndex),
           role: 'option'
@@ -212,6 +217,8 @@ var Autowhatever = function (_Component) {
   }, {
     key: 'onKeyDown',
     value: function onKeyDown(event) {
+      var _this4 = this;
+
       var _props4 = this.props;
       var inputProps = _props4.inputProps;
       var focusedSectionIndex = _props4.focusedSectionIndex;
@@ -221,36 +228,38 @@ var Autowhatever = function (_Component) {
       // on:
       //   const { onKeyDown } = inputProps;
 
-      switch (event.key) {
-        case 'ArrowDown':
-        case 'ArrowUp':
-          var _props5 = this.props;
-          var multiSection = _props5.multiSection;
-          var items = _props5.items;
-          var getSectionItems = _props5.getSectionItems;
+      (function () {
+        switch (event.key) {
+          case 'ArrowDown':
+          case 'ArrowUp':
+            var _props5 = _this4.props;
+            var multiSection = _props5.multiSection;
+            var items = _props5.items;
+            var getSectionItems = _props5.getSectionItems;
 
-          var sectionIterator = (0, _sectionIterator2.default)({
-            multiSection: multiSection,
-            data: multiSection ? items.map(function (section) {
-              return getSectionItems(section).length;
-            }) : items.length
-          });
-          var nextPrev = event.key === 'ArrowDown' ? 'next' : 'prev';
+            var sectionIterator = (0, _sectionIterator2.default)({
+              multiSection: multiSection,
+              data: multiSection ? items.map(function (section) {
+                return getSectionItems(section).length;
+              }) : items.length
+            });
+            var nextPrev = event.key === 'ArrowDown' ? 'next' : 'prev';
 
-          var _sectionIterator$next = sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
+            var _sectionIterator$next = sectionIterator[nextPrev]([focusedSectionIndex, focusedItemIndex]);
 
-          var _sectionIterator$next2 = _slicedToArray(_sectionIterator$next, 2);
+            var _sectionIterator$next2 = _slicedToArray(_sectionIterator$next, 2);
 
-          var newFocusedSectionIndex = _sectionIterator$next2[0];
-          var newFocusedItemIndex = _sectionIterator$next2[1];
+            var newFocusedSectionIndex = _sectionIterator$next2[0];
+            var newFocusedItemIndex = _sectionIterator$next2[1];
 
 
-          onKeyDownFn(event, { newFocusedSectionIndex: newFocusedSectionIndex, newFocusedItemIndex: newFocusedItemIndex });
-          break;
+            onKeyDownFn(event, { newFocusedSectionIndex: newFocusedSectionIndex, newFocusedItemIndex: newFocusedItemIndex });
+            break;
 
-        default:
-          onKeyDownFn(event, { focusedSectionIndex: focusedSectionIndex, focusedItemIndex: focusedItemIndex });
-      }
+          default:
+            onKeyDownFn(event, { focusedSectionIndex: focusedSectionIndex, focusedItemIndex: focusedItemIndex });
+        }
+      })();
     }
   }, {
     key: 'render',
@@ -274,7 +283,7 @@ var Autowhatever = function (_Component) {
         'aria-owns': this.getItemsContainerId(),
         'aria-expanded': isOpen,
         'aria-activedescendant': ariaActivedescendant
-      }, theme('input', 'input'), this.props.inputProps, {
+      }, theme('input', 'input'), (0, _omit2.default)(this.props.inputProps, 'expand'), {
         onKeyDown: this.props.inputProps.onKeyDown && this.onKeyDown
       });
       var spanStyle = {
@@ -283,6 +292,9 @@ var Autowhatever = function (_Component) {
         visibility: 'hidden',
         whiteSpace: 'pre'
       };
+
+      console.debug(this.props.inputProps);
+      console.debug((0, _omit2.default)(this.props.inputProps, 'expand'));
 
       return _react2.default.createElement(
         'div',
@@ -314,7 +326,8 @@ Autowhatever.propTypes = {
   _react.PropTypes.object, _react.PropTypes.func]),
   focusedSectionIndex: _react.PropTypes.number, // Section index of the focused item
   focusedItemIndex: _react.PropTypes.number, // Focused item index (within a section)
-  theme: _react.PropTypes.object };
+  theme: _react.PropTypes.object // Styles. See: https://github.com/markdalgleish/react-themeable
+};
 Autowhatever.defaultProps = {
   id: '1',
   multiSection: false,
