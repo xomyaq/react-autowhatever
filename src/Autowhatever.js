@@ -256,9 +256,6 @@ export default class Autowhatever extends Component {
       whiteSpace: 'pre'
     };
 
-    console.debug(this.props.inputProps);
-    console.debug(omit(this.props.inputProps, 'expand'));
-
     return (
       <div {...theme('container', 'container', isOpen && 'containerOpen')}>
         <span {...theme('shadow', 'shadow')} ref="shadow" style={spanStyle}>

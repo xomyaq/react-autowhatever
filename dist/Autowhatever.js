@@ -293,9 +293,6 @@ var Autowhatever = function (_Component) {
         whiteSpace: 'pre'
       };
 
-      console.debug(this.props.inputProps);
-      console.debug((0, _omit2.default)(this.props.inputProps, 'expand'));
-
       return _react2.default.createElement(
         'div',
         theme('container', 'container', isOpen && 'containerOpen'),
